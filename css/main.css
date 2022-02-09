@@ -1,0 +1,27 @@
+/*TODO: add a Google Font import */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  font-size: 20px;
+  font-family: Lato, sans-serif; /*TODO:  need to add a Google font */
+  background-color: #222;
+  color: #eee;
+}
+body {
+  min-height: 100vh;
+}
+.offline {
+  /*TODO: something visual about being offline */
+}
+a[href],
+a:link,
+a:active,
+a:visited {
+  color: orangered;
+}
