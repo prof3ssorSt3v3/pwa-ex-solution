@@ -1,4 +1,4 @@
-const version = 8;
+const version = 25;
 let isOnline = true; //will get updated via messaging
 const staticCache = `pwaEx3StaticCache${version}`;
 const dynamicCache = `pwaEx3DynamicCache${version}`;
@@ -10,7 +10,7 @@ const cacheList = [
   '/css/main.css',
   '/js/app.js',
   '/manifest.json',
-  //TODO: add all the icons from the img folder
+  '/img/offline-1.png',
   '/favicon.ico',
   '/img/android-chrome-192x192.png',
   '/img/android-chrome-512x512.png',

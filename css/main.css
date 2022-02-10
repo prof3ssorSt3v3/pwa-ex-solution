@@ -15,15 +15,40 @@ body {
 }
 body {
   min-height: 100vh;
-  padding: 1rem 2rem;
+  padding: 0;
+  margin: 0;
+}
+.container {
+  margin: 0;
+  padding: 1rem 2rem 3rem 2rem;
+  min-height: 100vh;
 }
 .offline {
   /*TODO: something visual about being offline */
-  background-color: rebeccapurple;
+  background-color: #444;
+  color: #ddd;
+  background-image: url(../img/offline-1.png);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.offline .container {
+  background-color: hsla(0, 0%, 10%, 0.5);
+}
+main h2 {
+  color: orange;
 }
 a[href],
 a:link,
 a:active,
 a:visited {
   color: orangered;
+}
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 3rem;
+  width: 100vw;
+  padding: 0 2rem;
+  background-color: #222;
 }

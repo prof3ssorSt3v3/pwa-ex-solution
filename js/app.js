@@ -6,7 +6,7 @@ const APP = {
     //when the page loads (runs on every page load)
     APP.registerSW();
     APP.addListeners();
-    setTimeout(APP.checkNavCount, 10000);
+    setTimeout(APP.checkNavCount, 10000); //10 seconds after loading check for install
     APP.changeDisplay(); //change display to say online or offline
   },
   registerSW: () => {
