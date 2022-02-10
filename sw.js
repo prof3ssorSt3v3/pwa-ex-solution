@@ -1,4 +1,4 @@
-const version = 5;
+const version = 8;
 let isOnline = true; //will get updated via messaging
 const staticCache = `pwaEx3StaticCache${version}`;
 const dynamicCache = `pwaEx3DynamicCache${version}`;

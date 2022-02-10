@@ -15,9 +15,11 @@ body {
 }
 body {
   min-height: 100vh;
+  padding: 1rem 2rem;
 }
 .offline {
   /*TODO: something visual about being offline */
+  background-color: rebeccapurple;
 }
 a[href],
 a:link,

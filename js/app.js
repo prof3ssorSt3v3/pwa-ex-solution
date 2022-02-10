@@ -6,7 +6,7 @@ const APP = {
     //when the page loads (runs on every page load)
     APP.registerSW();
     APP.addListeners();
-    APP.updateNavCount();
+    setTimeout(APP.checkNavCount, 10000);
     APP.changeDisplay(); //change display to say online or offline
   },
   registerSW: () => {
@@ -26,7 +26,19 @@ const APP = {
   },
   addListeners: () => {
     //add event listeners for DOM
-    //TODO: add dom listener for navigating between home and other.
+    //check if already installed
+    if (navigator.standalone) {
+      console.log('Launched: Installed (iOS)');
+      APP.isStandalone = true;
+    } else if (matchMedia('(display-mode: standalone)').matches) {
+      console.log('Launched: Installed');
+      APP.isStandalone = true;
+    } else {
+      // console.log('Launched: Browser Tab');
+      APP.isStandalone = false;
+    }
+    //listen for pageshow event to update the nav counter
+    window.addEventListener('pageshow', APP.updateNavCount);
 
     //add event listeners for online and offline
     window.addEventListener('online', APP.changeStatus);
@@ -58,7 +70,15 @@ const APP = {
     APP.changeDisplay();
   },
   changeDisplay: () => {
-    //TODO: update something in the HTML to show offline
+    if (APP.isOnline) {
+      //online
+      document.body.classList.remove('offline');
+      document.querySelector('.isonline').textContent = '';
+    } else {
+      //offline
+      document.body.classList.add('offline');
+      document.querySelector('.isonline').textContent = ' NAWT ';
+    }
   },
   gotMessage: (ev) => {
     //received message from service worker
@@ -71,10 +91,58 @@ const APP = {
     });
   },
   updateNavCount: (ev) => {
-    //TODO: when the app loads check to see if the sessionStorage key
-    //exists and if the number is greater than 4.
-    //if yes, then call the deferred install prompt
-    //check for null on APP.deferredPrompt
+    //TODO: when the app loads check to see if the sessionStorage key exists
+    // if the number exists then increment by 1.
+    // triggered by the pageshow event
+    console.log(ev);
+    //don't need to do this if the app is already installed...
+    if (!APP.isStandalone) {
+      APP.navCount = 0;
+      let storage = sessionStorage.getItem('exercise3NavCount');
+      if (storage) {
+        APP.navCount = Number(storage) + 1;
+      } else {
+        APP.navCount = 1;
+      }
+      sessionStorage.setItem('exercise3NavCount', APP.navCount);
+    }
+  },
+  checkNavCount: () => {
+    //page has just loaded if the count is high enough then show the prompt
+    let storage = sessionStorage.getItem('exercise3NavCount');
+    if (storage) {
+      APP.navCount = Number(storage);
+      if (APP.navCount > 2) {
+        console.log('show the prompt'); //only works on user interaction
+        document.body.addEventListener(
+          'click',
+          () => {
+            if (APP.deferredPrompt) {
+              APP.deferredPrompt.prompt();
+              APP.deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                  //user says yes
+                  console.log('User accepted the install prompt');
+                  APP.deferredPrompt = null; //we will not need it again.
+                  //and clear out sessionStorage
+                  sessionStorage.clear();
+                } else {
+                  //user says not now
+                  console.log('User dismissed the install prompt');
+                }
+              });
+            } else {
+              window.addEventListener('beforeinstallprompt', (ev) => {
+                console.log('beforeinstallprompt');
+                ev.preventDefault();
+                APP.deferredPrompt = ev;
+              });
+            }
+          },
+          { once: true }
+        );
+      }
+    }
   },
 };
 
